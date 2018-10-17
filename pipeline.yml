@@ -10,7 +10,7 @@ jobs:
       file: tools/tasks/build/task.yml
     - put: app-image
       params: 
-        - build: out
+        build: out
         
 - name: k8s-deploy-test
   plan:
@@ -35,6 +35,8 @@ jobs:
       file: tools/tasks/service/task.yml
       params:
         k8s_namespace: test
+        k8s_token: ((kube_concourse))
+        k8s_service: ((app_name))
     # - task: task-smoke
     #   file: tools/tasks/smoke/task.yml
         

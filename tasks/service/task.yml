@@ -13,9 +13,6 @@ inputs:
 outputs:
 - name: out
 
-params:
-  k8s_token: ((kube_concourse))
-  k8s_service: ((app_name))
 
 run:
   path: ./tools/tasks/service/task.sh

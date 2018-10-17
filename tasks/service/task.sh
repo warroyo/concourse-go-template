@@ -1,7 +1,6 @@
 #!/bin/sh
 
 set -o errexit
-set -o errtrace
 set -o pipefail
 
 apk add --no-cache jq

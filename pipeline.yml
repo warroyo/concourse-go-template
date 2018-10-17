@@ -29,6 +29,6 @@ resources:
 - name: app-image
   type: docker-image
   source:
-    repository: warroyo90/((app_name))
+    repository: warroyo90/debug-resource:1.0.0
     username: ((docker_login.username))
     password: ((docker_login.password))

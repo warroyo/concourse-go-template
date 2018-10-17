@@ -12,7 +12,20 @@ jobs:
       params: {
         build: out
         }
+- name: kubernetes-deploy-dev
+  plan:
+  - get: repo
+  - put: kubernetes-dev
+    params:
+      kubectl: apply -f my-app/k8s -f my-app/k8s/production
+      wait_until_ready_selector: app=myapp
 
+resource_types:
+- name: kubernetes
+  type: docker-image
+  source:
+    repository: zlabjp/kubernetes-resource
+    tag: "1.11"
 
 resources:
 - name: repo
@@ -32,3 +45,10 @@ resources:
     repository: warroyo90/((app_name))
     username: ((docker_login.username))
     password: ((docker_login.password))
+- name: kubernetes-dev
+  type: kubernetes
+  source:
+    server: https://dev.clusters.warroyo.com:8443
+    namespace: dev
+    token: ((kube_concourse))
+    certificate_authority: ((kube_concourse_ca.certificate))

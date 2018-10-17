@@ -1,3 +1,3 @@
 FROM scratch
-COPY  out/main /main
+COPY  main /main
 CMD ["./main"]

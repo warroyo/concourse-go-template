@@ -12,13 +12,14 @@ jobs:
       params: {
         build: out
         }
-- name: kubernetes-deploy-dev
+- name: kubernetes-deploy-stage
   plan:
   - get: repo
-  - put: kubernetes-dev
+    passed: [build]
+  - put: kubernetes-stage
     params:
-      kubectl: apply -f my-app/k8s -f my-app/k8s/production
-      wait_until_ready_selector: app=myapp
+      kubectl: apply -f repo/k8s/service.yml -f repo/k8s/deployment.yml
+      wait_until_ready_selector: app=((app_name))
 
 resource_types:
 - name: kubernetes
@@ -45,10 +46,10 @@ resources:
     repository: warroyo90/((app_name))
     username: ((docker_login.username))
     password: ((docker_login.password))
-- name: kubernetes-dev
+- name: kubernetes-stage
   type: kubernetes
   source:
     server: https://dev.clusters.warroyo.com:8443
-    namespace: dev
+    namespace: stage
     token: ((kube_concourse))
     certificate_authority: ((kube_concourse_ca.certificate))

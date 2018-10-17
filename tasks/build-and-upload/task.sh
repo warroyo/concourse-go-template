@@ -5,5 +5,4 @@ set -o errtrace
 set -o pipefail
 
 cd ./repo
-mkdir -p bin
-go build main
+go build -ldflags "-linkmode external -extldflags -static" -a main.go

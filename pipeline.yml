@@ -13,7 +13,7 @@ resources:
 - name: repo
   type: git
   source:
-    uri: git@github.com:warroyo/hello-go.git
+    uri: ((repo_url))
     branch: master
     private_key: {{github_private_key}}
 - name: tools

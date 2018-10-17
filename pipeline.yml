@@ -37,6 +37,7 @@ jobs:
         k8s_namespace: test
         k8s_token: ((kube_concourse))
         k8s_service: ((app_name))
+        k8s_server: ((k8s_server))
     # - task: task-smoke
     #   file: tools/tasks/smoke/task.yml
         
@@ -81,14 +82,14 @@ resources:
 - name: kubernetes-stage
   type: kubernetes
   source:
-    server: https://dev.clusters.warroyo.com:8443
+    server: ((k8s_server))
     namespace: stage
     token: ((kube_concourse))
     certificate_authority: ((kube_concourse_ca.certificate))
 - name: kubernetes-test
   type: kubernetes
   source:
-    server: https://dev.clusters.warroyo.com:8443
+    server: ((k8s_server))
     namespace: test
     token: ((kube_concourse))
     certificate_authority: ((kube_concourse_ca.certificate))

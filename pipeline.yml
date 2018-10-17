@@ -10,7 +10,7 @@ jobs:
       file: tools/tasks/build/task.yml
     - put: app-image
       params: {
-        build: tools/tasks/build
+        dockerfile: tools/tasks/build/Dockerfile
         }
 
 

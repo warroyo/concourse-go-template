@@ -2,8 +2,10 @@
 jobs:
 - name: build
   plan:
-    - get: repo
-      trigger: true
+    - aggregate:
+      - get: tools
+      - get: repo
+        trigger: true
     - task: task-build
       file: tools/tasks/build-and-upload/task.yml
 
@@ -15,9 +17,9 @@ resources:
   source:
     uri: ((repo_url))
     branch: master
-    private_key: {{github_private_key}}
+    private_key: ((github_rsa.private_key))
 - name: tools
   type: git
   source:
-    uri: git@github.com:warroyo/concourse-go-template.git
+    uri: https://github.com/warroyo/concourse-go-template.git
     branch: master

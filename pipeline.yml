@@ -9,17 +9,47 @@ jobs:
     - task: task-build
       file: tools/tasks/build/task.yml
     - put: app-image
-      params: {
-        build: out
-        }
-- name: kubernetes-deploy-stage
+      params: 
+        - build: out
+        
+- name: k8s-deploy-test
   plan:
   - get: repo
-    passed: [build]
+    trigger: true
+    passed: 
+      - build
+  - put: kubernetes-test
+    params:
+      kubectl: apply -f repo/k8s/service.yml -f repo/k8s/deployment.yml
+      wait_until_ready_selector: app=((app_name))
+
+- name: test-smoke
+  plan:
+    - aggregate:
+      - get: tools
+      - get: repo
+        trigger: true
+        passed: 
+          - k8s-deploy-test
+    - task: task-k8s-service
+      file: tools/tasks/service/task.yml
+      params:
+        k8s_namespace: test
+    # - task: task-smoke
+    #   file: tools/tasks/smoke/task.yml
+        
+
+- name: k8s-deploy-stage
+  plan:
+  - get: repo
+    trigger: true
+    passed: 
+      - test-smoke
   - put: kubernetes-stage
     params:
       kubectl: apply -f repo/k8s/service.yml -f repo/k8s/deployment.yml
       wait_until_ready_selector: app=((app_name))
+
 
 resource_types:
 - name: kubernetes
@@ -51,5 +81,12 @@ resources:
   source:
     server: https://dev.clusters.warroyo.com:8443
     namespace: stage
+    token: ((kube_concourse))
+    certificate_authority: ((kube_concourse_ca.certificate))
+- name: kubernetes-test
+  type: kubernetes
+  source:
+    server: https://dev.clusters.warroyo.com:8443
+    namespace: test
     token: ((kube_concourse))
     certificate_authority: ((kube_concourse_ca.certificate))

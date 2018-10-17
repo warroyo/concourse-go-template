@@ -1,0 +1,21 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: lachlanevenson/k8s-kubectl
+    tag: v1.11.3
+
+inputs:
+  - name: tools
+  - name: repo
+
+outputs:
+- name: out
+
+params:
+  k8s_token: ((kube_concourse))
+  k8s_service: ((app_name))
+
+run:
+  path: ./tools/tasks/service/task.sh

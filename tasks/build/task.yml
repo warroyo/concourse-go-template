@@ -14,4 +14,4 @@ outputs:
 - name: out
 
 run:
-  path: ./tools/tasks/build-and-upload/task.sh
+  path: ./tools/tasks/build/task.sh

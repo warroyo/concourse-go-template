@@ -1,3 +1,3 @@
 FROM scratch
-COPY  /repo/main /main
+COPY  main /main
 CMD ["./main"]

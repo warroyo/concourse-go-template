@@ -1,0 +1,23 @@
+
+jobs:
+- name: build
+  plan:
+    - get: repo
+      trigger: true
+    - task: task-build
+      file: tools/tasks/build-and-upload/task.yml
+
+
+
+resources:
+- name: repo
+  type: git
+  source:
+    uri: git@github.com:warroyo/hello-go.git
+    branch: master
+    private_key: {{github_private_key}}
+- name: tools
+  type: git
+  source:
+    uri: git@github.com:warroyo/concourse-go-template.git
+    branch: master

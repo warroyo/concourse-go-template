@@ -6,3 +6,4 @@ set -o pipefail
 
 cd ./repo
 go build -ldflags "-linkmode external -extldflags -static" -a main.go
+mv main ./out/main

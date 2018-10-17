@@ -9,7 +9,9 @@ jobs:
     - task: task-build
       file: tools/tasks/build/task.yml
     - put: app-image
-      params: {build: tools/tasks/build}
+      params: {
+        build: tools/tasks/build
+        }
 
 
 resources:
